@@ -75,6 +75,22 @@ def post_random_quote(quotes_and_sources, log_file):
     except tweepy.TweepyException as e:
         print(f"error posting tweet, {e}")
 
+def post_random_quote_test(quotes_and_sources, log_file):
+    quotes = list(quotes_and_sources.keys())
+    posted_quotes = load_posted_quotes(log_file)
+    available_quotes = []
+    for quote in quotes:
+        if quote not in posted_quotes:
+            available_quotes.append(quote)
+
+    if not available_quotes:
+        print("no more quotes to post!")
+        return
+    
+    quote = random.choice(available_quotes)
+    print(f"[SIMULATION] would post this tweet: {quote}")
+    save_posted_quote(quote,log_file)
+
 
 def main():
     QUOTES_FILE = "ursula_quotes.txt"
@@ -83,8 +99,8 @@ def main():
     quotes_and_sources = load_quotes_and_sources(QUOTES_FILE)
 
     while True:
-        post_random_quote(quotes_and_sources, POSTED_LOG_FILE)
-        time.sleep(1200)
+        post_random_quote_test(quotes_and_sources, POSTED_LOG_FILE)
+        time.sleep(1)
 
 
 
